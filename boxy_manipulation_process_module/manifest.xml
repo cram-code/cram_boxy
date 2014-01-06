@@ -1,0 +1,14 @@
+<package>
+  <description brief="boxy_manipulation_process_module">
+
+     boxy_manipulation_process_module
+
+  </description>
+  <author>Georg</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/boxy_manipulation_process_module</url>
+
+</package>
+
+
