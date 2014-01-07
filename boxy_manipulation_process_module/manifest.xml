@@ -4,11 +4,10 @@
      boxy_manipulation_process_module
 
   </description>
-  <author>Georg</author>
+  <author>Georg Bartels</author>
   <license>BSD</license>
-  <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/boxy_manipulation_process_module</url>
 
+  <rosdep name="sbcl"/>
+  <depend package="roslisp_utilities"/>
+  <depend package="cram_beasty"/>
 </package>
-
-
