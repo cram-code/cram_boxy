@@ -31,7 +31,9 @@
   :license "BSD"
   :description "Interface package of CRAM to command Boxy robot."
 
-  :depends-on (cram-beasty roslisp-utilities)
+  :depends-on (roslisp
+               roslisp-utilities
+               cram-beasty)
   :components
   ((:module "src"
     :components

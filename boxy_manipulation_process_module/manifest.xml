@@ -8,6 +8,8 @@
   <license>BSD</license>
 
   <rosdep name="sbcl"/>
+  <depend package="roslisp"/>
   <depend package="roslisp_utilities"/>
   <depend package="cram_beasty"/>
+
 </package>
