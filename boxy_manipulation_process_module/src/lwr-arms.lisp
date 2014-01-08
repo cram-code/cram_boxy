@@ -30,8 +30,8 @@
 
 (defvar *left-arm* nil
   "Variable holding the interface to the Beasty controller of the left arm.")
-(defvar *right-arm* nil
-  "Variable holding the interface to the Beasty controller of the right arm.")
+(defvar *left-arm-config* nil
+  "Variable holding the current configuration of the left arm.")
 
 (defun init-boxy-manipulation-process-module ()
   "Inits connection to hardware drivers used by the process module."
