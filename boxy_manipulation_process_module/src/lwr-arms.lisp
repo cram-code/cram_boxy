@@ -36,12 +36,14 @@
 (defun init-boxy-manipulation-process-module ()
   "Inits connection to hardware drivers used by the process module."
   (unless *left-arm* 
-    (setf *left-arm* (cram-beasty:make-beasty-interface "/LEFT_BEASTY")))
+    (setf *left-arm* (make-beasty-interface "/LEFT_BEASTY")))
   (unless *left-arm-config*
-    (setf *left-arm-config* (make-beasty-robot-config))))
+    (setf *left-arm-config* (make-beasty-robot))))
 
 (roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
 ;; TODO(Georg): add clean-up-function with LOGOUT
 
-(defun make-beasty-robot-config ()
-  "Creates and returns an instance of class `beasty-robot'.")
+(defun make-beasty-robot ()
+  "Creates and returns an instance of class `beasty-robot'."
+  
+)
