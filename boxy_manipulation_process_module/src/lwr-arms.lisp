@@ -62,9 +62,7 @@
 (defun init-boxy-manipulation-process-module ()
   "Inits connection to hardware drivers used by the process module."
   (unless *left-arm* 
-    ;; TODO(Georg): extend signature of make-beasty-interface to also take on robot
-    (setf *left-arm* (make-beasty-interface *left-beasty-action-name*)))
-  (setf (robot *left-arm*) *left-arm-config*))
+    (setf *left-arm* (make-beasty-interface *left-beasty-action-name* *left-arm-config*))))
 
 (defun clean-up-boxy-manipulation-process-module ()
   (when *left-arm*
