@@ -30,31 +30,47 @@
 
 (defvar *left-arm* nil
   "Variable holding the interface to the Beasty controller of the left arm.")
-(defvar *left-arm-config* nil
-  "Variable holding the current configuration of the left arm.")
 
-(defparameter *left-beasty-action-name* "/LEFT_BEASTY"
+(defparameter *left-beasty-action-name* "/BEASTY"
   "ROS name of the Beasty action server for the left arm.")
-(defparameter *left-simulation-flag* t
+(defparameter *left-simulation-flag* nil
   "Flag indicating whether the left LWR is a simulated arm.")
-(defparameter *left-gravity-vector* #(0 0 1 0 0 0)
+;; TODO(Georg): consider abstracting away the motor-power...
+(defparameter *left-initial-motor-power* t
+  "Flag indicating whether the left LWR should start with motor-power on.")
+(defparameter *left-tool-weight* 0.47
+  "Weight of the tool mounted to the left LWR in kg.")
+(defparameter *left-tool-com* (cl-transforms:make-3d-vector -0.04 -0.04 0.0)
+  "Center of mass of tool mounted on left arm.")
+(defparameter *left-arm-tool*
+  (make-instance 'beasty-tool :mass *left-tool-weight* :com *left-tool-com*)
+  "Modelling of tool mounted on left LWR.")
+(defparameter *left-gravity-vector* #(0 0 9.81 0 0 0)
   "_NEGATIV_ 6D acceleration vector indicating in which direction gravity is acting on the
-  left arm. NOTE: Is expressed w.r.t. to the base-frame of the left arm. First translational (x,y,z), then rotational (x,y,z) acceleration.")
+  left arm. NOTE: Is expressed w.r.t. to the base-frame of the left arm. First translational (x,y,z), then rotational (x,y,z) acceleration.")  
+(defparameter *left-arm-base-config*
+  (make-instance 'beasty-base :base-acceleration *left-gravity-vector*)
+  "Modelling of mounting of left LWR to the torso of the robot.")
+(defparameter *left-arm-config*
+  (make-instance 'beasty-robot 
+                 :simulation-flag *left-simulation-flag* 
+                 :motor-power *left-initial-motor-power*
+                 :tool-configuration *left-arm-tool* 
+                 :base-configuration *left-arm-base-config*)
+  "Modelling of entire initial configuration of left LWR.")
 
 (defun init-boxy-manipulation-process-module ()
   "Inits connection to hardware drivers used by the process module."
   (unless *left-arm* 
+    ;; TODO(Georg): extend signature of make-beasty-interface to also take on robot
     (setf *left-arm* (make-beasty-interface *left-beasty-action-name*)))
-  (unless *left-arm-config*
-    (setf *left-arm-config* (init-beasty-robot *left-simulation-flag* 
-                                               *left-gravity-vector*))))
+  (setf (robot *left-arm*) *left-arm-config*))
+
 (defun clean-up-boxy-manipulation-process-module ()
   (when *left-arm*
     ;; TODO(Georg): stop arm
-    ;; TODO(Georg): logout with Beasty
-    (setf *left-arm* nil))
-  (when *left-arm-config*
-    (setf *left-arm-config* nil)))
+    (cram-beasty::logout-beasty *left-arm*)
+    (setf *left-arm* nil)))
 
 (roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
 (roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
