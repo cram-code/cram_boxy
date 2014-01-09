@@ -62,8 +62,7 @@
 
 (defun clean-up-boxy-manipulation-process-module ()
   (when *left-arm*
-    ;; TODO(Georg): stop arm
-    (cram-beasty::logout-beasty *left-arm*)
+    (cleanup-beasty-interface *left-arm*)
     (setf *left-arm* nil)))
 
 (roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
