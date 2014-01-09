@@ -72,7 +72,6 @@
 
 (roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
 (roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
-;; TODO(Georg): add clean-up-function with LOGOUT
 
 (defun init-beasty-robot (simulated-p base-acceleration)
   "Creates, inits, and returns an instance of class `beasty-robot'. `simulated-p' signals
