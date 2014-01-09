@@ -59,6 +59,9 @@
                  :base-configuration *left-arm-base-config*)
   "Modelling of entire initial configuration of left LWR.")
 
+(roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
+(roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
+
 (defun init-boxy-manipulation-process-module ()
   "Inits connection to hardware drivers used by the process module."
   (unless *left-arm* 
@@ -69,9 +72,6 @@
     ;; TODO(Georg): stop arm
     (cram-beasty::logout-beasty *left-arm*)
     (setf *left-arm* nil)))
-
-(roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
-(roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
 
 (defun init-beasty-robot (simulated-p base-acceleration)
   "Creates, inits, and returns an instance of class `beasty-robot'. `simulated-p' signals
