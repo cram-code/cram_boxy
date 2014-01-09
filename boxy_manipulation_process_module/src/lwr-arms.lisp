@@ -35,9 +35,6 @@
   "ROS name of the Beasty action server for the left arm.")
 (defparameter *left-simulation-flag* nil
   "Flag indicating whether the left LWR is a simulated arm.")
-;; TODO(Georg): consider abstracting away the motor-power...
-(defparameter *left-initial-motor-power* t
-  "Flag indicating whether the left LWR should start with motor-power on.")
 (defparameter *left-tool-weight* 0.47
   "Weight of the tool mounted to the left LWR in kg.")
 (defparameter *left-tool-com* (cl-transforms:make-3d-vector -0.04 -0.04 0.0)
@@ -54,13 +51,9 @@
 (defparameter *left-arm-config*
   (make-instance 'beasty-robot 
                  :simulation-flag *left-simulation-flag* 
-                 :motor-power *left-initial-motor-power*
                  :tool-configuration *left-arm-tool* 
                  :base-configuration *left-arm-base-config*)
   "Modelling of entire initial configuration of left LWR.")
-
-(roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
-(roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
 
 (defun init-boxy-manipulation-process-module ()
   "Inits connection to hardware drivers used by the process module."
@@ -72,6 +65,9 @@
     ;; TODO(Georg): stop arm
     (cram-beasty::logout-beasty *left-arm*)
     (setf *left-arm* nil)))
+
+(roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
+(roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
 
 (defun init-beasty-robot (simulated-p base-acceleration)
   "Creates, inits, and returns an instance of class `beasty-robot'. `simulated-p' signals
