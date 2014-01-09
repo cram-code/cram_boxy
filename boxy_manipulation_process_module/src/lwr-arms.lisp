@@ -67,14 +67,3 @@
 
 (roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
 (roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
-
-(defun init-beasty-robot (simulated-p base-acceleration)
-  "Creates, inits, and returns an instance of class `beasty-robot'. `simulated-p' signals
- whether this a simulated LWR, and the 6D-vector `base-acceleration' denotes the _negative_
- external acceleration acting on the robot."
-  (declare (type boolean simulated-p)
-           (type (vector number 6) base-acceleration))
-  (let ((robot (make-instance 'beasty-robot)))
-    (setf (simulation-flag robot) simulated-p)
-    (setf (base-acceleration (base-configuration robot))  base-acceleration)
-    robot))
