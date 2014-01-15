@@ -34,7 +34,8 @@
   :depends-on (roslisp
                roslisp-utilities
                cram-beasty
-               process-modules)
+               process-modules
+               designators)
   :components
   ((:module "src"
     :components
