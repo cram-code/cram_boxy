@@ -28,8 +28,9 @@
 
 (in-package :cl-user)
 
-(defpackage :boxy-manipulation-process-module
+(desig-props:def-desig-package boxy-manipulation-process-module
   (:use #:roslisp
         #:common-lisp
-        #:cram-beasty
-        #:cram-process-modules))
+        #:cram-beasty)
+  (:import-from #:cram-process-modules
+                def-process-module))
