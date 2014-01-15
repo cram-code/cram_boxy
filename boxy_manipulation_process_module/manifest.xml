@@ -11,5 +11,6 @@
   <depend package="roslisp"/>
   <depend package="roslisp_utilities"/>
   <depend package="cram_beasty"/>
+  <depend package="cram_process_modules"/>
 
 </package>

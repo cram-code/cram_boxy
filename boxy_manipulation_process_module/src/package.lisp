@@ -31,4 +31,5 @@
 (defpackage :boxy-manipulation-process-module
   (:use #:roslisp
         #:common-lisp
-        #:cram-beasty))
+        #:cram-beasty
+        #:cram-process-modules))
