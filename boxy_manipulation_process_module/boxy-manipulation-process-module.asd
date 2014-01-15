@@ -35,7 +35,8 @@
                roslisp-utilities
                cram-beasty
                process-modules
-               designators)
+               designators
+               cram-reasoning)
   :components
   ((:module "src"
     :components
