@@ -33,7 +33,7 @@
 
 (defparameter *left-beasty-action-name* "/BEASTY"
   "ROS name of the Beasty action server for the left arm.")
-(defparameter *left-simulation-flag* nil
+(defparameter *left-simulation-flag* t
   "Flag indicating whether the left LWR is a simulated arm.")
 (defparameter *left-tool-weight* 0.47
   "Weight of the tool mounted to the left LWR in kg.")
@@ -55,15 +55,17 @@
                  :base-configuration *left-arm-base-config*)
   "Modelling of entire initial configuration of left LWR.")
 
-(defun init-boxy-manipulation-process-module ()
-  "Inits connection to hardware drivers used by the process module."
+(defun init-boxy-arms ()
+  "Inits connection to beasty controllers of LWR arms."
   (unless *left-arm* 
     (setf *left-arm* (make-beasty-interface *left-beasty-action-name* *left-arm-config*))))
 
-(defun clean-up-boxy-manipulation-process-module ()
+(defun cleanup-boxy-arms ()
+  "Stops LWR arms, and closes connection to beasty action servers."
   (when *left-arm*
     (cleanup-beasty-interface *left-arm*)
     (setf *left-arm* nil)))
 
-(roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
-(roslisp-utilities:register-ros-cleanup-function clean-up-boxy-manipulation-process-module)
+(def-action-handler huhu ()
+  "A test action-handler."
+  (format t "~%HUHU-OUTPUT~%"))

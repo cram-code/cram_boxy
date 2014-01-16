@@ -26,22 +26,20 @@
 ;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defsystem boxy-manipulation-process-module
-  :author "Georg Bartels <georg.bartels@cs.uni-bremen.de>"
-  :license "BSD"
-  :description "Interface package of CRAM to command Boxy robot."
+(in-package :boxy-manipulation-process-module)
 
-  :depends-on (roslisp
-               roslisp-utilities
-               cram-beasty
-               process-modules
-               designators
-               cram-reasoning)
-  :components
-  ((:module "src"
-    :components
-    ((:file "package")
-     (:file "designators" :depends-on ("package"))
-     (:file "action-handling" :depends-on ("package"))
-     (:file "lwr-arms" :depends-on ("package" "action-handling"))
-     (:file "process-module" :depends-on ("package" "lwr-arms"))))))
+(defun init-boxy-manipulation-process-module ()
+  "Inits connection to hardware drivers used by the process module."
+  (init-boxy-arms))
+
+(defun cleanup-boxy-manipulation-process-module ()
+  "Cleans up all connections to hardware drivers."
+  (cleanup-boxy-arms))
+
+(def-process-module boxy-manipulation-process-module (designator)
+  "Defines a new process module `boxy-manipulation-process-module' which executes action
+ designators. Note: Prior to execution, it will try to call reference on `designator'."
+  (apply #'call-action (reference designator)))
+
+(roslisp-utilities:register-ros-init-function init-boxy-manipulation-process-module)
+(roslisp-utilities:register-ros-cleanup-function cleanup-boxy-manipulation-process-module)

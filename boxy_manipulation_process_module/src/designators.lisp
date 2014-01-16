@@ -26,22 +26,22 @@
 ;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defsystem boxy-manipulation-process-module
-  :author "Georg Bartels <georg.bartels@cs.uni-bremen.de>"
-  :license "BSD"
-  :description "Interface package of CRAM to command Boxy robot."
+(in-package :boxy-manipulation-process-module)
 
-  :depends-on (roslisp
-               roslisp-utilities
-               cram-beasty
-               process-modules
-               designators
-               cram-reasoning)
-  :components
-  ((:module "src"
-    :components
-    ((:file "package")
-     (:file "designators" :depends-on ("package"))
-     (:file "action-handling" :depends-on ("package"))
-     (:file "lwr-arms" :depends-on ("package" "action-handling"))
-     (:file "process-module" :depends-on ("package" "lwr-arms"))))))
+(def-fact-group boxy-manipulation-predicates ()
+  (<- (safety-desig? ?desig)
+    (action-desig? ?desig)
+    (desig-prop ?desig (safety ?_))))
+
+(def-fact-group boxy-manipulation-designators (action-desig)
+  (<- (action-desig ?desig (huhu))
+    (safety-desig? ?desig)))
+
+(def-fact-group boxy-manipulation-process-module
+    (matching-process-module available-process-module)
+  
+  (<- (matching-process-module ?designator boxy-manipulation-process-module)
+    (safety-desig? ?designator))
+  
+  (<- (available-process-module boxy-manipulation-process-module)
+    (not (projection-running ?_))))

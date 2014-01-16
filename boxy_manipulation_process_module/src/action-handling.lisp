@@ -26,22 +26,26 @@
 ;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defsystem boxy-manipulation-process-module
-  :author "Georg Bartels <georg.bartels@cs.uni-bremen.de>"
-  :license "BSD"
-  :description "Interface package of CRAM to command Boxy robot."
+(in-package :boxy-manipulation-process-module)
 
-  :depends-on (roslisp
-               roslisp-utilities
-               cram-beasty
-               process-modules
-               designators
-               cram-reasoning)
-  :components
-  ((:module "src"
-    :components
-    ((:file "package")
-     (:file "designators" :depends-on ("package"))
-     (:file "action-handling" :depends-on ("package"))
-     (:file "lwr-arms" :depends-on ("package" "action-handling"))
-     (:file "process-module" :depends-on ("package" "lwr-arms"))))))
+(defgeneric call-action (action &rest params)
+  (:documentation  "The resolution results of all matching action-designators of this
+ process module are an `action' and possibly some `params'. There should be a 'call-action'
+ method implemented for each set of `action' and `params' which will be called
+ automatically by the process module after successful binding of `action' and `params'."))
+
+(defmethod call-action ((action-sym t) &rest params)
+  "This is the default implementation of 'call-action'. In case the process module
+ indicated that it is matching but no suitable method 'call-action' for the infered
+ `action' and `params' could be found, it will finish by printing a warning."
+  (roslisp:ros-info
+   (boxy-manipulation-process-module)
+   "Unimplemented operation `~a' with parameters ~a. Doing nothing."
+   action-sym params)
+  (sleep 0.5))
+
+(defmacro def-action-handler (name args &body body)
+  "Writes a 'call-action' method for 'action' `name' and 'params' `args', with `body'."
+  (alexandria:with-gensyms (action-sym params)
+    `(defmethod call-action ((,action-sym (eql ',name)) &rest ,params)
+       (destructuring-bind ,args ,params ,@body))))

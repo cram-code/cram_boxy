@@ -33,4 +33,17 @@
         #:common-lisp
         #:cram-beasty)
   (:import-from #:cram-process-modules
-                def-process-module))
+                def-process-module
+                matching-process-module
+                available-process-module
+                projection-running)
+  (:import-from #:cram-reasoning
+                def-fact-group
+                <-
+                not)
+  (:import-from #:cram-designators
+                action-desig?
+                action-desig
+                desig-prop
+                reference)
+  (:desig-properties :safety))
