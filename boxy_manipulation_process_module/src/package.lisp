@@ -46,4 +46,5 @@
                 action-desig
                 desig-prop
                 reference)
-  (:desig-properties :safety))
+  (:export #:boxy-manipulation-process-module)
+  (:desig-properties :safety :to :monitor :detect :collisions))

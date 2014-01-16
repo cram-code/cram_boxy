@@ -30,6 +30,8 @@
 
 (defvar *left-arm* nil
   "Variable holding the interface to the Beasty controller of the left arm.")
+(defvar *left-collision-fluent* 2
+  "Fluent indicating whether a collision was signalled from the left arm.")
 
 (defparameter *left-beasty-action-name* "/BEASTY"
   "ROS name of the Beasty action server for the left arm.")
@@ -69,3 +71,7 @@
 (def-action-handler huhu ()
   "A test action-handler."
   (format t "~%HUHU-OUTPUT~%"))
+
+(def-action-handler collision-monitor ()
+  "Returns the collision fluent for the left arm."
+  *left-collision-fluent*)

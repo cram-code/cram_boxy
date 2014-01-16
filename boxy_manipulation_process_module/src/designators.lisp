@@ -31,17 +31,26 @@
 (def-fact-group boxy-manipulation-predicates ()
   (<- (safety-desig? ?desig)
     (action-desig? ?desig)
-    (desig-prop ?desig (safety ?_))))
+    (desig-prop ?desig (safety ?_)))
+
+  (<- (monitoring-desig? ?desig)
+    (action-desig? ?desig)
+    (desig-prop ?desig (to monitor))))
 
 (def-fact-group boxy-manipulation-designators (action-desig)
   (<- (action-desig ?desig (huhu))
-    (safety-desig? ?desig)))
+    (safety-desig? ?desig))
+  
+  (<- (action-desig ?desig (collision-monitor))
+    (monitoring-desig? ?desig)
+    (desig-prop ?desig (detect collisions))))
 
 (def-fact-group boxy-manipulation-process-module
     (matching-process-module available-process-module)
   
   (<- (matching-process-module ?designator boxy-manipulation-process-module)
-    (safety-desig? ?designator))
+    (or (safety-desig? ?designator)
+        (monitoring-desig? ?desig)))
   
   (<- (available-process-module boxy-manipulation-process-module)
     (not (projection-running ?_))))
